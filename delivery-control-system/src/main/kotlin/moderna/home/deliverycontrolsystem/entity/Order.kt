@@ -18,5 +18,6 @@ data class Order(
     @Enumerated(EnumType.STRING) var status: Status = Status.Default,
     @Column(nullable = false) var purchaseDate: LocalDate,
     @Column(nullable = false) var invoicingDate: LocalDate,
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "sellerId") var orderSeller: Sellers? = null,
 
     )
