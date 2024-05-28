@@ -1,4 +1,0 @@
-ALTER TABLE pedido
-ADD COLUMN seller_id UUID;
-
-ALTER TABLE pedido ADD CONSTRAINT FK_PEDIDO_ON_SELLERID FOREIGN KEY (seller_id) REFERENCES vendedores (seller_id);
