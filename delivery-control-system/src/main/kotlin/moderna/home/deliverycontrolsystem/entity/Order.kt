@@ -10,10 +10,10 @@ import java.time.LocalDate
 @Table(name = "Pedido")
 data class Order(
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val orderId: Long? = null,
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) var Id: Long? = null,
     @Column(nullable = false, unique = true) var orderNumber: String = "",
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "customerCode") val customer: Customer? = null,
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "loadID") val load: Load? = null,
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "customerCode") var customer: Customer? = null,
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "loadNumber") val load: Load? = null,
     @Enumerated(EnumType.STRING) var orderType: OrderType,
     @Enumerated(EnumType.STRING) var status: Status = Status.Default,
     @Column(nullable = false) var purchaseDate: LocalDate,
