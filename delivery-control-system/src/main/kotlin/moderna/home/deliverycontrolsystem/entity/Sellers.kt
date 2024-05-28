@@ -13,8 +13,8 @@ import java.util.UUID
 
 data class Sellers(
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val sellerId: UUID = UUID.randomUUID(),
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val sellerId: Long? = null,
     @Column(nullable = false) var sellersName: String = " ",
-    @Column(nullable = false) var sellersRCA: String = " ",
+    @Column(nullable = false) var sellersRCA: Long,
 
     )
