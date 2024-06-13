@@ -8,4 +8,6 @@ interface ISellerService {
 
     fun findBySellerName (sellersname: String): Sellers
 
+    fun findBySellerRca (sellerRCA: Long): Sellers
+
 }
