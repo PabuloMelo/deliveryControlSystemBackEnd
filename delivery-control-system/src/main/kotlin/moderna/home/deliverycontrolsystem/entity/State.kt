@@ -12,7 +12,9 @@ import java.time.LocalDate
 data class State (
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val stateId: Long? = null,
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "Id", referencedColumnName = "Id") var order: Order? = null,
-    @Column(nullable = false) var orderNumber: String = "",
+    @Column(nullable = false) var orderNumber: Long,
+    @Column(nullable = false) @JoinColumn(name = "customerName") var customerName: String  = " ",
+    @Column(nullable = false) @JoinColumn(name = "orderCode") var customerCode: Long,
     @Enumerated(EnumType.STRING) var state: StateInit = StateInit.Default,
     @Enumerated(EnumType.STRING) var firstLevel: FirstLevel = FirstLevel.SemPendencia,
     @Enumerated(EnumType.STRING) var secondLevel: SecondLevel = SecondLevel.SemPendencia,
