@@ -9,9 +9,9 @@ import java.time.LocalDate
 data class Load(
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val loadID: Long? = null,
-    @Column(nullable = true) var loadNumber: Long,
+    @Column(nullable = true) var loadNumber: Long?,
     @OneToMany(mappedBy = "load", cascade = [CascadeType.ALL], fetch = FetchType.LAZY) var orders: List<Order> = mutableListOf(),
-    @Enumerated var driver: Driver,
-    @Column(nullable = false) var departureDate: LocalDate,
+    @Enumerated var driver: Driver = Driver.Default,
+    @Column(nullable = false) var departureDate: String = " ",
 
     )

@@ -8,7 +8,7 @@ data class CustomerView(
 
     val name: String,
     val customerCode: Long?,
-    val phone: Long,
+    val phone: Long?,
     val customerType: CustomerType,
     val customerRegistered: Register
 
