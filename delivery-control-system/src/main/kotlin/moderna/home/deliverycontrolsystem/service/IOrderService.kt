@@ -11,6 +11,12 @@ interface IOrderService {
     fun findByOrderCode(orderCode: Long): Order
 
 
-    fun findAllOrdersByCustomer(customer: Customer): List<Order>
+    fun findAllOrdersByCustomer(customerCode: Long): List<Order>
+
+    fun findAllbyLoad(loadnumber: Long): List<Order>
+
+
+    fun updateAllOrders()
+
 
 }

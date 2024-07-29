@@ -8,12 +8,9 @@ interface ILoadService {
 
     fun save(load: Load): Load
 
-    fun findByloadNumber(loadId: Long): Load?
+    fun findByloadNumber(loadNumber: Long): Load?
 
-    fun findAllbyLoad(load: Load): List<Order>
-
-
-
+    fun findAllbyLoad(loadNumber: Long): List<Order>
 
 
 }

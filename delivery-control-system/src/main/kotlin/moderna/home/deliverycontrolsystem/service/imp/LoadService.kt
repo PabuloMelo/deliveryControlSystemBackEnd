@@ -1,7 +1,8 @@
-package moderna.home.deliverycontrolsystem.service.Imp
+package moderna.home.deliverycontrolsystem.service.imp
 
 import moderna.home.deliverycontrolsystem.entity.Load
 import moderna.home.deliverycontrolsystem.entity.Order
+import moderna.home.deliverycontrolsystem.exceptions.BusinessException
 import moderna.home.deliverycontrolsystem.repository.LoadRepository
 import moderna.home.deliverycontrolsystem.service.ILoadService
 import org.springframework.stereotype.Service
@@ -15,15 +16,15 @@ class LoadService(
         this.loadRepository.save(load)
 
 
-    override fun findByloadNumber(loadCode: Long): Load {
+    override fun findByloadNumber(loadNumber: Long): Load {
         val load: Load = (
-                this.loadRepository.findByloadNumber(loadCode) ?:
-                throw RuntimeException("Carregamento $loadCode não encontrado"))
+                this.loadRepository.findByloadNumber(loadNumber)
+                    ?: throw BusinessException("Carregamento $loadNumber não encontrado"))
         return load
     }
 
-    override fun findAllbyLoad(load: Load): List<Order> =
-        this.loadRepository.findAllbyLoad(load)
+    override fun findAllbyLoad(loadNumber: Long): List<Order> =
+        this.loadRepository.findAllbyLoad(loadNumber)
 
 
 }

@@ -9,3 +9,5 @@ class DeliveryControlSystemApplication
 fun main(args: Array<String>) {
 	runApplication<DeliveryControlSystemApplication>(*args)
 }
+
+
