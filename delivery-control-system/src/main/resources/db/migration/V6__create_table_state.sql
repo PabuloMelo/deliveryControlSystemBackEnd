@@ -3,14 +3,17 @@ CREATE TABLE situacao (
    id BIGINT,
    order_number BIGINT NOT NULL,
    customer_name VARCHAR(255) NOT NULL,
-   order_code BIGINT NOT NULL,
+   customer_code BIGINT NOT NULL,
    state VARCHAR(255),
    first_level VARCHAR(255),
    second_level VARCHAR(255),
    description VARCHAR(255),
+   invoicing_date date NOT NULL,
+   purchase_date date NOT NULL,
    solve_date date,
    solve_driver VARCHAR(255),
    days_until_solve BIGINT,
+   resolve VARCHAR(255),
    CONSTRAINT pk_situacao PRIMARY KEY (state_id)
 );
 

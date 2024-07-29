@@ -1,20 +1,31 @@
 package moderna.home.deliverycontrolsystem.entity
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.Table
-import java.util.UUID
+import jakarta.persistence.*
 
 @Entity
 @Table(name = "Vendedores")
 
 data class Sellers(
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val sellerId: Long? = null,
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) var sellerId: Long? = null,
     @Column(nullable = false) var sellersName: String = " ",
-    @Column(nullable = false) var sellersRCA: Long,
+    @Column(nullable = false, unique = true) var sellersRca: Long? = null,
+    @OneToMany(
+        fetch = FetchType.LAZY,
+        cascade = [CascadeType.ALL],
+        mappedBy = "orderSeller"
+    ) var orders: List<Order> = mutableListOf(),
+) {
+    companion object {
+        val defaultSeller = Sellers(
+            sellerId = 1,
+            sellersName = "Vendedor Não cadastrado"
 
-    )
+
+        )
+
+
+    }
+
+
+}

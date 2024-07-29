@@ -10,10 +10,10 @@ import java.util.UUID
 @Table(name = "Cliente")
 
 data class Customer(
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long? = null,
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val customerId: Long? = null,
     @Column(nullable = false) var name: String = " ",
-    @Column(nullable = true) var phone: Long? = null,
-    @Column(nullable = false) var customerCode: Long?,
+    @Column(nullable = true) var phone: String? = " ",
+    @Column(nullable = false, unique = true) var customerCode: Long? = 0,
     @Enumerated(EnumType.STRING) var customerType: CustomerType = CustomerType.Normal,
     @Enumerated(EnumType.STRING) var customerRegistered: Register = Register.Default,
     @OneToMany(
@@ -22,5 +22,8 @@ data class Customer(
         mappedBy = "customer"
     ) var orders: List<Order> = mutableListOf(),
 )
+
+
+
 
 

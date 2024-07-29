@@ -8,8 +8,10 @@ interface IStateService {
 
     fun save(state: State): State
 
-    fun findByOrderNumber(orderCode: Long): Order?
+    fun findByStateOrderNumber(orderNumber: Long): State?
 
-    fun findByCustomerName(name: String): Customer?
+    fun findByStateCustomerName(name: String): State?
 
+
+    fun updateAll()
 }

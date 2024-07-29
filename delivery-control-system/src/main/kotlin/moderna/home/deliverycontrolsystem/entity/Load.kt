@@ -8,10 +8,13 @@ import java.time.LocalDate
 @Table(name = "Carregamento")
 data class Load(
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val loadID: Long? = null,
-    @Column(nullable = true) var loadNumber: Long?,
-    @OneToMany(mappedBy = "load", cascade = [CascadeType.ALL], fetch = FetchType.LAZY) var orders: List<Order> = mutableListOf(),
-    @Enumerated var driver: Driver = Driver.Default,
-    @Column(nullable = false) var departureDate: String = " ",
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val loadId: Long? = null,
+    @Column(nullable = true) var loadNumber: Long? = null,
+    @OneToMany(fetch = FetchType.LAZY,
+        cascade = arrayOf(CascadeType.ALL),
+        mappedBy = "load")
+    var orders: List<Order> = mutableListOf(),
+    @Enumerated(EnumType.STRING) var driver: Driver = Driver.Default,
+    @Column(nullable = false) var departureDate: LocalDate,
 
     )
