@@ -12,7 +12,7 @@ CREATE TABLE situacao (
    purchase_date date NOT NULL,
    solve_date date,
    solve_driver VARCHAR(255),
-   days_until_solve BIGINT,
+   days_until_solve INT,
    resolve VARCHAR(255),
    CONSTRAINT pk_situacao PRIMARY KEY (state_id)
 );

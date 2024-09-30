@@ -16,11 +16,10 @@ data class CustomerDTO(
 ) {
 
 
-    fun generatedCustomerCode(customerRegistered: Register,customerRepository: CustomerRepository): Long {
+    fun generatedCustomerCode(customerRegistered: Register, customerRepository: CustomerRepository): Long {
 
 
-
-        if (customerRegistered == Register.SIM ) {
+        if (customerRegistered == Register.SIM) {
 
             return this.customerCode
         }
@@ -40,15 +39,12 @@ data class CustomerDTO(
     fun toEntity(): Customer = Customer(
 
 
-
-
         name = this.name,
         customerCode = this.customerCode,
         phone = this.phone,
         customerType = this.customerType,
         customerRegistered = this.customerRegistered
     )
-
 
 
 }

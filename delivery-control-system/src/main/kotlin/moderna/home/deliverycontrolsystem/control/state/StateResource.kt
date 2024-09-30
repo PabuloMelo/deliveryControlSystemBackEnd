@@ -68,7 +68,7 @@ class StateResource(
 
     @GetMapping("/customerName/{customerName}")
 
-    fun findByStateOrderCode(@PathVariable customerName: String): StateView {
+    fun findByStateCustomerName(@PathVariable customerName: String): StateView {
         val state: State = stateService.findByStateCustomerName(customerName)
         return StateView(state)
 

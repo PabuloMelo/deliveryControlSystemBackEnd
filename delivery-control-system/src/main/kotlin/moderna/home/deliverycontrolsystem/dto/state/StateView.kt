@@ -17,7 +17,7 @@ class StateView(
     val description: String,
     val solveDate: LocalDate?,
     val invoiceDate: LocalDate?,
-    val solveDriver: Driver,
+    val solveDriver: String,
     val daysUntilSolve: Int?,
     val resolve: Resolve
 

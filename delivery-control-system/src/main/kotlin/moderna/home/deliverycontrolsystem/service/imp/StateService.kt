@@ -10,6 +10,7 @@ import moderna.home.deliverycontrolsystem.service.IStateService
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 
+@Suppress("NAME_SHADOWING")
 @Service
 class StateService(
     private val stateRepository: StateRepository, private val orderService: OrderService
