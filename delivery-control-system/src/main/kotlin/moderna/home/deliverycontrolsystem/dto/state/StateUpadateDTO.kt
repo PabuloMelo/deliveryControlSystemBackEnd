@@ -13,7 +13,7 @@ class StateUpadateDTO(
     val firstLevel: FirstLevel?,
     val secondLevel: SecondLevel?,
     val description: String?,
-    val solveDriver: Driver?,
+    val solveDriver: String?,
     val daysUntilSolve: Int?,
     val solveDate: LocalDate?,
     val resolve: Resolve?

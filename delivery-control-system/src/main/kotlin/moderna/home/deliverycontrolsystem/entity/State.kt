@@ -19,7 +19,7 @@ data class State (
     @Column(nullable = false) @JoinColumn(name = "invoicing_date", referencedColumnName = "invoicing_date") var invoicingDate: LocalDate?,
     @Column(nullable = false) @JoinColumn(name = "purchase_date", referencedColumnName = "purchase_date") var purchaseDate: LocalDate?,
     @Column(nullable = true) var solveDate: LocalDate?,
-    @Enumerated(EnumType.STRING) var solveDriver: Driver = Driver.Default,
+    @Column(nullable = true) var solveDriver: String ,
     @Column(nullable = true) var daysUntilSolve: Int?,
     @Enumerated(EnumType.STRING) var resolve: Resolve
 

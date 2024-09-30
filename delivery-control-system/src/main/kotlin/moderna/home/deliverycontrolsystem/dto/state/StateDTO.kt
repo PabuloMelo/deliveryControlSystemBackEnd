@@ -17,7 +17,7 @@ data class StateDTO(
     val firstLevel: FirstLevel,
     val secondLevel: SecondLevel,
     val description: String,
-    val solveDriver: Driver,
+    val solveDriver: String,
     //val invoicingDate: LocalDate,
     val solveDate: LocalDate?,
     val daysUntilSolve: Int,
