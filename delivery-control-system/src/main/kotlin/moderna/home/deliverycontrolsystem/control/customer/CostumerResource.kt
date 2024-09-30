@@ -26,7 +26,7 @@ class CostumerResource(private val customerService: CustomerService,
     private val customerRepository: CustomerRepository
     ) {
 
-    @PostMapping
+    @PostMapping("/save")
     fun saveCustomer(@RequestBody @Valid customerDTO: CustomerDTO): ResponseEntity <String> {
 
         customerDTO.generatedCustomerCode(customerDTO.customerRegistered, customerRepository)
