@@ -1,17 +1,19 @@
 package moderna.home.deliverycontrolsystem.entity
 
 import jakarta.persistence.*
-import moderna.home.deliverycontrolsystem.enumerators.Driver
 import java.time.LocalDate
 @Entity
 
 @Table(name = "Carregamento")
 data class Load(
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val loadID: Long = 0,
-    @Column(nullable = true) var loadNumber: String = " ",
-    @OneToMany(mappedBy = "load", cascade = [CascadeType.ALL], fetch = FetchType.LAZY) var orders: List<Order> = mutableListOf(),
-    @Enumerated var driver: Driver,
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val loadId: Long? = null,
+    @Column(nullable = true) var loadNumber: Long? = null,
+    @OneToMany(fetch = FetchType.LAZY,
+        cascade = [CascadeType.ALL],
+        mappedBy = "load")
+    var orders: List<Order> = mutableListOf(),
+    @Column(nullable = false) var driver: String,
     @Column(nullable = false) var departureDate: LocalDate,
 
     )
