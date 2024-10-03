@@ -48,7 +48,7 @@ class OrderResource(
 ) {
 
 
-    @PostMapping
+    @PostMapping("/save")
     fun saveOrder(@RequestBody orderDTO: OrderDTO): ResponseEntity<String> {
 
 
