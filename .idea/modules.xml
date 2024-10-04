@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/BackEnd.iml" filepath="$PROJECT_DIR$/.idea/BackEnd.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/delivery-control-system.main.iml" filepath="$PROJECT_DIR$/.idea/modules/delivery-control-system.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/delivery-control-system.test.iml" filepath="$PROJECT_DIR$/.idea/modules/delivery-control-system.test.iml" />
     </modules>
   </component>
 </project>
