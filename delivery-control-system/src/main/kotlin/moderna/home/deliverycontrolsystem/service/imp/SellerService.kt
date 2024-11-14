@@ -14,7 +14,7 @@ class SellerService(
         this.sellersRepository.save(sellers)
 
 
-    override fun findBySellerName(sellersname: String): Sellers {
+    override fun findBySellerName(sellersname: String): Sellers? {
         return sellersRepository.findBySellerName(sellersname)
     }
 

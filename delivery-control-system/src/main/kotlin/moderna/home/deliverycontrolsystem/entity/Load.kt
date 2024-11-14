@@ -1,5 +1,6 @@
 package moderna.home.deliverycontrolsystem.entity
 
+import com.fasterxml.jackson.annotation.JsonBackReference
 import jakarta.persistence.*
 import java.time.LocalDate
 @Entity
@@ -8,11 +9,11 @@ import java.time.LocalDate
 data class Load(
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val loadId: Long? = null,
-    @Column(nullable = true) var loadNumber: Long? = null,
+    @Column(nullable = true) var loadNumber: Long? = 0,
     @OneToMany(fetch = FetchType.LAZY,
         cascade = [CascadeType.ALL],
         mappedBy = "load")
-    var orders: List<Order> = mutableListOf(),
+    @JsonBackReference var  orders: List<Order> = mutableListOf(),
     @Column(nullable = false) var driver: String,
     @Column(nullable = false) var departureDate: LocalDate,
 

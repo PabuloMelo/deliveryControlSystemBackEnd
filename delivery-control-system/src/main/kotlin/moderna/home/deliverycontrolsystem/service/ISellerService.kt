@@ -6,7 +6,7 @@ interface ISellerService {
 
     fun save(sellers: Sellers): Sellers
 
-    fun findBySellerName (sellersname: String): Sellers
+    fun findBySellerName (sellersname: String): Sellers?
 
     fun findByRcaSellerName(sellerRCA: Long?): Sellers
 

@@ -1,5 +1,6 @@
 package moderna.home.deliverycontrolsystem.entity
 
+import com.fasterxml.jackson.annotation.JsonBackReference
 import jakarta.persistence.*
 
 @Entity
@@ -14,7 +15,7 @@ data class Sellers(
         fetch = FetchType.LAZY,
         cascade = [CascadeType.ALL],
         mappedBy = "orderSeller"
-    ) var orders: List<Order> = mutableListOf(),
+    ) @JsonBackReference var orders: List<Order> = mutableListOf(),
 ) {
     companion object {
         val defaultSeller = Sellers(

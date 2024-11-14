@@ -1,13 +1,14 @@
 package moderna.home.deliverycontrolsystem.control.state
 
 import moderna.home.deliverycontrolsystem.dto.state.StateDTO
-import moderna.home.deliverycontrolsystem.dto.state.StateUpadateDTO
+import moderna.home.deliverycontrolsystem.dto.state.StateUpdateDTO
 import moderna.home.deliverycontrolsystem.dto.state.StateView
 import moderna.home.deliverycontrolsystem.entity.State
-import moderna.home.deliverycontrolsystem.enumerators.StateInit
 import moderna.home.deliverycontrolsystem.repository.OrderRepository
 import moderna.home.deliverycontrolsystem.repository.StateRepository
 import moderna.home.deliverycontrolsystem.service.imp.StateService
+import moderna.home.deliverycontrolsystem.service.specification.OrderStateMapper
+import org.springframework.format.annotation.DateTimeFormat
 
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -27,25 +28,23 @@ import java.time.LocalDate
 
 class StateResource(
     private val stateService: StateService,
-    private val orderRepository: OrderRepository, private val stateRepository: StateRepository
+    private val orderRepository: OrderRepository,
+    private val stateRepository: StateRepository,
+    private val stateMapper: OrderStateMapper,
 ) {
 
 
-    @PostMapping
+    @PostMapping("/saveState")
 
     fun saveOrderState(@RequestBody stateDTO: StateDTO): ResponseEntity<String> {
 
 
         return try {
 
-            if (stateDTO.state == StateInit.SemPendencias && stateDTO.solveDate == null) {
-
-            }
-
             val state: State = this.stateService.save(stateDTO.toEntity(orderRepository))
 
 
-            ResponseEntity.ok("Pedido ${state.orderNumber} Salvo com sucesso!")
+            ResponseEntity.ok("Pedido ${state.order!!.orderCode} Salvo com sucesso!")
 
 
         } catch (e: IllegalArgumentException) {
@@ -58,9 +57,13 @@ class StateResource(
 
     @GetMapping("/orderNumber/{orderNumber}")
 
-    fun findByStateOrderCode(@PathVariable orderNumber: Long): StateView {
+    fun findByStateOrderCode(@PathVariable orderNumber: Long): ResponseEntity<StateView> {
         val state: State = stateService.findByStateOrderNumber(orderNumber)
-        return StateView(state)
+
+        val stateView = stateMapper.toStateView(state)
+
+
+        return ResponseEntity.ok(stateView)
 
 
     }
@@ -68,26 +71,31 @@ class StateResource(
 
     @GetMapping("/customerName/{customerName}")
 
-    fun findByStateCustomerName(@PathVariable customerName: String): StateView {
+    fun findByStateCustomerName(@PathVariable customerName: String): ResponseEntity<StateView> {
         val state: State = stateService.findByStateCustomerName(customerName)
-        return StateView(state)
 
+        val stateView = stateMapper.toStateView(state)
+
+        return ResponseEntity.ok(stateView)
 
     }
 
 
-    @PatchMapping
+    @PatchMapping("/updateState")
 
     fun updateStateOrder(
         @RequestParam(value = "orderNumber") orderNumber: Long,
-        @RequestBody stateUpdateDTO: StateUpadateDTO
-    ): StateView {
+        @RequestBody stateUpdateDTO: StateUpdateDTO
+    ): ResponseEntity<StateView> {
 
         val state: State = stateService.findByStateOrderNumber(orderNumber)
-        val stateToUpdate: State = stateUpdateDTO.toEntity(state)
+        val stateToUpdate: State = stateUpdateDTO.toEntity(state, orderRepository)
         val stateUpdated: State = this.stateService.save(stateToUpdate)
 
-        return StateView(stateUpdated)
+
+        val stateView = stateMapper.toStateView(stateUpdated)
+
+        return ResponseEntity.ok(stateView)
 
 
     }
@@ -113,6 +121,48 @@ class StateResource(
             ResponseEntity.badRequest().body("Erro ao Atualizar os pedidos")
 
         }
+
+
+    }
+
+    @GetMapping("/findAllBy/")
+
+    fun searchAllStatesByUserParameters(
+
+        @RequestParam(required = false) orderCode: Long?,
+        @RequestParam(required = false) customerCode: Long?,
+        @RequestParam(required = false) customerName: String?,
+        @RequestParam(required = false) stateInit: String?,
+        @RequestParam(required = false) stateFirstLevel: String?,
+        @RequestParam(required = false) stateSecondLevel: String?,
+        @RequestParam(required = false) resolve: String?,
+        @RequestParam(required = false) driver: String?,
+        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) invoiceDateInt: LocalDate?,
+        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) invoiceDateEnd: LocalDate?,
+        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) purchaseDateInit: LocalDate?,
+        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) purchaseDateEnd: LocalDate?
+
+    ): ResponseEntity<List<StateView>> {
+
+        val situations = stateService.findAllStatesByUserParameter(
+            orderCode,
+            customerCode,
+            customerName,
+            stateInit,
+            stateFirstLevel,
+            stateSecondLevel,
+            resolve,
+            driver,
+            invoiceDateInt,
+            invoiceDateEnd,
+            purchaseDateInit,
+            purchaseDateEnd
+        )
+
+        val stateView = situations.map { stateMapper.toStateView(it) }
+
+
+        return ResponseEntity.ok(stateView)
 
 
     }

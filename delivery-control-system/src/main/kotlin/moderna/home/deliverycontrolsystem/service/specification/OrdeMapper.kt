@@ -27,6 +27,7 @@ abstract class OrderViewMapper {
     @Mapping(source = "orderSeller.sellersName", target = "sellerName")
     @Mapping(source = "daysUntilDelivery", target = "daysUntilDelivery")
     @Mapping(source = "orderFutureDelState", target = "orderFutureDelState")
+    @Mapping(source = "orderAddress", target = "orderAddress")
     abstract fun toOrderView(order: Order): OrderView
 
 

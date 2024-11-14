@@ -23,7 +23,7 @@ data class OrderViewList(
 
         orderCode = order.orderCode,
         orderType = order.orderType,
-        customerCode = order.customerCode,
+        customerCode = order.customer!!.customerCode,
         status = order.status,
         purchaseDate = order.purchaseDate,
         invoicingDate = order.invoicingDate!!,

@@ -1,5 +1,6 @@
 package moderna.home.deliverycontrolsystem.entity
 
+import com.fasterxml.jackson.annotation.JsonBackReference
 import jakarta.persistence.*
 import moderna.home.deliverycontrolsystem.enumerators.CustomerType
 import moderna.home.deliverycontrolsystem.enumerators.Register
@@ -20,7 +21,7 @@ data class Customer(
         fetch = FetchType.LAZY,
         cascade = arrayOf(CascadeType.ALL),
         mappedBy = "customer"
-    ) var orders: List<Order> = mutableListOf(),
+    ) @JsonBackReference var orders: List<Order> = mutableListOf(),
 )
 
 

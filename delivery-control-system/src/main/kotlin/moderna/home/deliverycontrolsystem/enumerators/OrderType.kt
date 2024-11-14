@@ -2,7 +2,7 @@ package moderna.home.deliverycontrolsystem.enumerators
 
 enum class OrderType {
 
-    Entrega, RetiraPosterior, Carteira, CartEntrega, CartRetiraPosterior, EntregaFutura, RetiraImediata
+    ENTREGA, RETIRA_POSTERIOR, CARTEIRA, CARTEIRA_ENTREGA, CARTEIRA_RETIRA_POSTERIOR, ENTREGA_FUTURA, RETIRA_IMEDIATA
 
 }
 

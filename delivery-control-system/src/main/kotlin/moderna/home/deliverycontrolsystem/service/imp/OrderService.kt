@@ -1,12 +1,12 @@
 package moderna.home.deliverycontrolsystem.service.imp
 
-import moderna.home.deliverycontrolsystem.dto.order.OrderView
 import moderna.home.deliverycontrolsystem.entity.Order
 import moderna.home.deliverycontrolsystem.exceptions.BusinessException
 import moderna.home.deliverycontrolsystem.exceptions.NotFoundOrderException
 import moderna.home.deliverycontrolsystem.repository.OrderRepository
-import moderna.home.deliverycontrolsystem.repository.SellersRepository
 import moderna.home.deliverycontrolsystem.service.IOrderService
+import moderna.home.deliverycontrolsystem.service.specification.OrderSpecification
+import moderna.home.deliverycontrolsystem.service.specification.OrderViewMapper
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 
@@ -16,7 +16,7 @@ class OrderService(
     private val customerService: CustomerService,
     private val loadService: LoadService,
     private val sellerService: SellerService,
-    private val sellersRepository: SellersRepository
+    private val orderViewMapper: OrderViewMapper
 
 ) : IOrderService {
 
@@ -24,11 +24,11 @@ class OrderService(
     override fun saveOrder(order: Order): Order {
         order.apply {
 
-            customer = customerService.findByCustomerCode(order.customerCode!!)
+            customer = customerService.findByCustomerCode(order.customer!!.customerCode!!)
 
 
-            load = loadService.findByloadNumber(order.loadNumber!!)
-            orderSeller = sellerService.findBySellerRca(order.sellerRCA)
+            load = loadService.findByloadNumber(order.load?.loadNumber!!)
+            orderSeller = sellerService.findBySellerRca(order.orderSeller?.sellersRca)
 
         }
         return this.orderRepository.save(order)
@@ -44,36 +44,32 @@ class OrderService(
     override fun findAllOrdersByCustomer(customerCode: Long): List<Order> =
         this.orderRepository.findAllByCustomerCode(customerCode)
 
-    override fun findAllbyLoad(loadnumber: Long): List<Order> =
-        this.orderRepository.findAllbyLoad(loadnumber)
+    override fun findAllByLoad(loadnumber: Long): List<Order> =
+        this.orderRepository.findAllByLoad(loadnumber)
 
     override fun updateAllOrders() {
 
         val orders = orderRepository.findAll()
-        val now = LocalDate.now()
+        LocalDate.now()
 
 
         try {
             orders.forEach { order ->
 
+                val orderView = orderViewMapper.toOrderView(order)
 
-                val newDaysUntilDelivery =
-                    OrderView.contDays(order.orderType, order.status, order.purchaseDate, now, order.invoicingDate!!)
-                order.daysUntilDelivery = newDaysUntilDelivery
+                order.apply {
 
-                val newFutureDlState =
-                    OrderView.deliveryFutureStatusActual(order.orderType, order.status, order.daysUntilDelivery)
-                order.orderFutureDelState = newFutureDlState
+                    orderSeller = sellerService.findBySellerRca(orderView.orderRca)
+                    customer = customerService.findByCustomerCode(order.customer?.customerCode)
 
-                val newOrderSeller = sellerService.findBySellerRca(order.sellerRCA)
-
-                order.orderSeller = newOrderSeller
+                }
 
 
-                val newSellerName = sellerService.findSellerNameByRca(order.sellerRCA)
 
-               order.sellerName = newSellerName
-
+                order.daysUntilDelivery = orderView.daysUntilDelivery
+                order.orderFutureDelState = orderView.orderFutureDelState
+                order.invoicingDate = orderView.invoicingDate
 
 
             }
@@ -83,5 +79,33 @@ class OrderService(
             throw BusinessException("Erro ao atualizar os pedidos")
         }
     }
+
+    override fun findOrdersByUserParameter(
+        orderCode: Long?,
+        customerCode: Long?,
+        customerName: String?,
+        loadCode: Long?,
+        orderType: String?,
+        purchaseDateInit: LocalDate?,
+        purchaseDateEnd: LocalDate?,
+        invoiceDateInit: LocalDate?,
+        invoiceDateEnd: LocalDate?
+    ): List<Order> {
+        val spec = OrderSpecification.withParameters(
+
+            orderCode,
+            customerCode,
+            customerName,
+            loadCode,
+            orderType,
+            purchaseDateInit,
+            purchaseDateEnd,
+            invoiceDateInit,
+            invoiceDateEnd
+        )
+
+        return orderRepository.findAll(spec)
+    }
+
 
 }

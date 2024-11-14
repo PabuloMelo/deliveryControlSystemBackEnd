@@ -1,26 +1,25 @@
 package moderna.home.deliverycontrolsystem.control.load
 
 import moderna.home.deliverycontrolsystem.dto.load.LoadDTO
-import moderna.home.deliverycontrolsystem.dto.order.OrderViewList
-
+import moderna.home.deliverycontrolsystem.dto.order.OrderView
 import moderna.home.deliverycontrolsystem.entity.Load
-import moderna.home.deliverycontrolsystem.entity.Order
 import moderna.home.deliverycontrolsystem.service.imp.LoadService
+import moderna.home.deliverycontrolsystem.service.specification.OrderViewMapper
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import java.util.stream.Collectors
 
 @RestController
 @RequestMapping("/api/loads")
 
 class LoadResource(
-    private val loadService: LoadService
+    private val loadService: LoadService,
+    private val orderViewMapper: OrderViewMapper,
 
-) {
+    ) {
 
 
-    @PostMapping
+    @PostMapping("/save")
 
     fun saveLoad(@RequestBody loadDTO: LoadDTO): ResponseEntity<String> {
         return try {
@@ -34,22 +33,18 @@ class LoadResource(
 
 
 
-    @GetMapping
+    @GetMapping("/load/")
 
-    fun findAllLoadNumber(@RequestParam(value = "loadNumber") loadNumber: Long): ResponseEntity <List<OrderViewList>> {
+    fun findAllLoadNumber(@RequestParam(value = "loadNumber") loadNumber: Long): ResponseEntity <List<OrderView>> {
 
-        val loadviewlis: List<OrderViewList>  = this.loadService.findAllbyLoad(loadNumber).stream().map { order: Order ->
-            OrderViewList(
-                order
-            )
-        }.collect(Collectors.toList())
-        return ResponseEntity.status(HttpStatus.OK).body(loadviewlis)
+        val loadOrders  = loadService.findAllbyLoad(loadNumber)
 
+        val orderView = loadOrders.map { orderViewMapper.toOrderView(it) }
+
+
+        return  ResponseEntity.status(HttpStatus.OK).body(orderView)
 
     }
-
-
-
 
 
 

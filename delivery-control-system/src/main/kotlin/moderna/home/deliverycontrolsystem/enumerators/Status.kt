@@ -1,6 +1,6 @@
 package moderna.home.deliverycontrolsystem.enumerators
 
 enum class Status {
-    Default,Faturado,AguardandoSolicitacao,Pendente,Entregue,Cancelada,Agendada
+    DEFAULT,EM_ROTA_DE_ENTREGA,AGUARDANDO_SOLICITACAO,PENDENTE,ENTREGUE,CANCELADA,AGENDADA,
 
 }

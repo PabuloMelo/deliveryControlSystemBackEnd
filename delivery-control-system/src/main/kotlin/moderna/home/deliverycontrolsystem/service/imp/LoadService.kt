@@ -24,7 +24,7 @@ class LoadService(
     }
 
     override fun findAllbyLoad(loadNumber: Long): List<Order> =
-        this.loadRepository.findAllbyLoad(loadNumber)
+        this.loadRepository.findAllByLoad(loadNumber)
 
 
 }

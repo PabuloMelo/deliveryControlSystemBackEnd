@@ -4,12 +4,12 @@ import moderna.home.deliverycontrolsystem.entity.Sellers
 
 data class SellerDTO(
 
-    val sellersName: String,
+    val sellerName: String,
     val sellerRca: Long?,
 ) {
 
     fun toEntity(): Sellers = Sellers(
-        sellersName = this.sellersName,
+        sellersName = this.sellerName,
         sellersRca = this.sellerRca
     )
 }

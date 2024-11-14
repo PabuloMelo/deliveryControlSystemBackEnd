@@ -5,12 +5,7 @@ import moderna.home.deliverycontrolsystem.dto.sellerDto.SellerView
 import moderna.home.deliverycontrolsystem.entity.Sellers
 import moderna.home.deliverycontrolsystem.service.imp.SellerService
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 
 @RestController
@@ -21,7 +16,7 @@ class SellerResource(
     private val sellerService: SellerService ) {
 
 
-    @PostMapping
+    @PostMapping("/saveSeller")
 
     fun saveSeller(@RequestBody sellerDto: SellerDTO): ResponseEntity<String>{
         val sellerSaved = this.sellerService.save(sellerDto.toEntity())
@@ -30,7 +25,7 @@ class SellerResource(
     }
 
 
-    @GetMapping("/{sellersRca}")
+    @GetMapping("/sellerRca/{sellersRca}")
     fun findSellerByRCA(@PathVariable sellersRca: Long): SellerView{
         val seller: Sellers? = this.sellerService.findBySellerRca(sellersRca)
         return SellerView(seller!!)
@@ -38,11 +33,11 @@ class SellerResource(
     }
 
 
+    @GetMapping("/sellerName/{sellerName}")
+    fun findSellerByName(@PathVariable sellerName: String): SellerView{
+        val seller: Sellers? = this.sellerService.findBySellerName(sellerName)
+        return SellerView(seller!!)
 
-
-
-
-
-
+    }
 
 }

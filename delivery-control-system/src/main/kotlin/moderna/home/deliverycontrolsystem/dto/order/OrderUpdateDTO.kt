@@ -19,10 +19,9 @@ data class OrderUpdateDTO(
     val status: Status?,
     val purchaseDate: LocalDate?,
     val invoicingDate: LocalDate?,
-    val sellerRca: Long?,
-    val sellerName: String?,
     val orderFutureDelState: FutureDlState?,
-    val sellerId: Long?
+    val orderAddress: String?
+
 
 
     ) {
@@ -41,18 +40,15 @@ data class OrderUpdateDTO(
 
 
             this.orderCode = this@OrderUpdateDTO.orderCode ?: this.orderCode
-            this.customerCode = this@OrderUpdateDTO.customerCode ?: this.customerCode
+            this.customer?.customerCode = this@OrderUpdateDTO.customerCode ?: this.customer!!.customerCode
             this.orderType = this@OrderUpdateDTO.orderType ?: this.orderType
-            this.loadNumber = this@OrderUpdateDTO.loadNumber ?: this.loadNumber
+            this.load?.loadNumber = this@OrderUpdateDTO.loadNumber ?: this.load!!.loadNumber
             this.status = this@OrderUpdateDTO.status ?: this.status
             this.purchaseDate = this@OrderUpdateDTO.purchaseDate ?: this.purchaseDate
             this.invoicingDate = this@OrderUpdateDTO.invoicingDate ?: this.invoicingDate
             this.orderFutureDelState = this@OrderUpdateDTO.orderFutureDelState ?: this.orderFutureDelState
-            this.sellerRCA = defineRCA(this.orderCode)
-
-
-
-
+            this.orderRCA = defineRCA(this.orderCode)
+            this.orderAddress = this@OrderUpdateDTO.orderAddress ?: this.orderAddress
 
 
         }

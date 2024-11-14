@@ -18,23 +18,22 @@ data class StateDTO(
     val secondLevel: SecondLevel,
     val description: String,
     val solveDriver: String,
-    //val invoicingDate: LocalDate,
     val solveDate: LocalDate?,
-    val daysUntilSolve: Int,
-    val resolve: Resolve
+
+
 
 
     ) {
 
-     fun solveDayDefault(state: StateInit,resolve: Resolve, invoiceDate: LocalDate): LocalDate? {
+     private fun solveDayDefault(state: StateInit, resolve: Resolve, invoiceDate: LocalDate): LocalDate? {
 
         return when{
 
-            state == StateInit.SemPendencias ->
+            state == StateInit.SEM_PENDENCIAS ->
 
                invoiceDate
 
-            state == StateInit.NãoEntregue || state == StateInit.ComPendencias && resolve == Resolve.Resolvido ->
+            state == StateInit.NAO_ENTREGUE || state == StateInit.COM_PENDENCIAS && resolve == Resolve.RESOLVIDO ->
 
                 this.solveDate
 
@@ -45,14 +44,14 @@ data class StateDTO(
 
     }
 
-     fun contDays(solveDate: LocalDate?, invoiceDate: LocalDate, state: StateInit, resolve: Resolve): Int {
+     private fun contDays(solveDate: LocalDate?, invoiceDate: LocalDate, state: StateInit, resolve: Resolve): Int {
 
         return when  {
-          state == StateInit.SemPendencias ->
+          state == StateInit.SEM_PENDENCIAS ->
 
                 0
 
-       state == StateInit.NãoEntregue || state == StateInit.ComPendencias && resolve == Resolve.Pendente ->
+       state == StateInit.NAO_ENTREGUE || state == StateInit.COM_PENDENCIAS && resolve == Resolve.PENDENTE ->
 
                 ChronoUnit.DAYS.between(invoiceDate, LocalDateTime.now()).toInt()
 
@@ -62,35 +61,54 @@ data class StateDTO(
     }
 
 
+
+    private fun defineResolve(state: StateInit, solveDate: LocalDate?): Resolve{
+
+        var resolve: Resolve = Resolve.PENDENTE
+
+       if (state == StateInit.COM_PENDENCIAS || state == StateInit.NAO_ENTREGUE && solveDate == null) {
+
+         resolve = Resolve.PENDENTE
+
+
+     }else if ( state == StateInit.COM_PENDENCIAS || state == StateInit.NAO_ENTREGUE && solveDate != null ) {
+
+      resolve =  Resolve.RESOLVIDO
+
+     }else if (state == StateInit.SEM_PENDENCIAS || state == StateInit.DEFAULT && solveDate == null){
+
+          resolve =  Resolve.SEM_PROBLEMAS
+
+        }
+
+        return resolve
+
+    }
+
+
     fun toEntity(orderRepository: OrderRepository): State {
 
 
 
         val order = orderRepository.findByOrderCode(orderNumber)
-        val customerName = order?.customerName ?: throw IllegalArgumentException("Cliente não encontardo")
-        val customerCode = order.customerCode!!
-        val orderPurchaseDate = order.purchaseDate
-        val orderInvoiceDate = order.invoicingDate
-        val actualContDays = contDays(solveDate,orderInvoiceDate!!, state, resolve)
-        val actualSolveDate = solveDayDefault(state,resolve, orderInvoiceDate)
+        val orderInvoiceDate = order?.invoicingDate
+        val actualResolve = defineResolve(state,solveDate)
+        val actualContDays = contDays(solveDate,orderInvoiceDate!!, state, actualResolve)
+        val actualSolveDate = solveDayDefault(state,actualResolve, orderInvoiceDate)
 
 
 
         return State(
 
-            orderNumber = this.orderNumber,
-            customerName = customerName,
-            customerCode = customerCode,
+            order = order,
             state = this.state,
             firstLevel = this.firstLevel,
             secondLevel = this.secondLevel,
             description = this.description,
             solveDriver = this.solveDriver,
-            purchaseDate = orderPurchaseDate,
-            invoicingDate = orderInvoiceDate,
             solveDate = actualSolveDate,
             daysUntilSolve = actualContDays,
-            resolve =  this.resolve
+            resolve =  actualResolve
         )
     }
 

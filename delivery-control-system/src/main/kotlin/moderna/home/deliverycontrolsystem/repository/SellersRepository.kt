@@ -13,12 +13,12 @@ interface SellersRepository: JpaRepository<Sellers,UUID>{
 
 
     @Query(value = "SELECT * FROM vendedores WHERE sellers_name = ?1", nativeQuery = true)
-    fun findBySellerName(sellersName: String): Sellers
+    fun findBySellerName(sellersName: String): Sellers?
 
-    @Query (value = "SELECT * FROM vendedores WHERE sellers_rca= ?1", nativeQuery = true)
+    @Query (value = "SELECT * FROM vendedores WHERE sellers_rca = ?1", nativeQuery = true)
     fun findBySellerRca(sellerRCA: Long?): Sellers?
 
-    @Query (value = "SELECT sellers_name FROM vendedores WHERE sellers_rca= ?1", nativeQuery = true)
+    @Query (value = "SELECT sellers_name FROM vendedores WHERE sellers_rca = ?1", nativeQuery = true)
     fun findByRcaSellerName(sellerRCA: Long?): Sellers
 
     @Query(value = "SELECT sellers_name FROM vendedores WHERE sellers_rca = ?1", nativeQuery = true)

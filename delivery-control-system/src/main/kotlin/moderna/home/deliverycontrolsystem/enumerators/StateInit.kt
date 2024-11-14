@@ -1,5 +1,5 @@
 package moderna.home.deliverycontrolsystem.enumerators
 
 enum class StateInit {
-    SemPendencias, ComPendencias, NãoEntregue, Default
+    SEM_PENDENCIAS, COM_PENDENCIAS, NAO_ENTREGUE, DEFAULT
 }
