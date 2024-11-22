@@ -5,3 +5,5 @@ CREATE TABLE carregamento (
    departure_date date NOT NULL,
    CONSTRAINT pk_carregamento PRIMARY KEY (load_id)
 );
+
+ALTER TABLE carregamento ADD CONSTRAINT uc_carregamento_load_number UNIQUE (load_number);

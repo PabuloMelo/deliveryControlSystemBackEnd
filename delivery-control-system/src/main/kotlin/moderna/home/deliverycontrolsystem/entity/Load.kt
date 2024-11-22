@@ -9,7 +9,7 @@ import java.time.LocalDate
 data class Load(
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val loadId: Long? = null,
-    @Column(nullable = true) var loadNumber: Long? = 0,
+    @Column(nullable = true, unique = true) var loadNumber: Long? = 0,
     @OneToMany(fetch = FetchType.LAZY,
         cascade = [CascadeType.ALL],
         mappedBy = "load")
