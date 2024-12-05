@@ -57,7 +57,7 @@ data class Order
 
 
 
-    @Column(nullable = true)
+    @Column(nullable = true, name = "days_until_delivery")
     var daysUntilDelivery: Int = 0,
 
     @Enumerated(EnumType.STRING)

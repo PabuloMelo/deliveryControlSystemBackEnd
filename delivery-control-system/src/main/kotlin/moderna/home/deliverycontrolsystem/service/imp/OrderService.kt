@@ -25,17 +25,19 @@ class OrderService(
         order.apply {
 
             customer = customerService.findByCustomerCode(order.customer!!.customerCode!!)
-
-
             load = loadService.findByloadNumber(order.load?.loadNumber!!)
             orderSeller = sellerService.findBySellerRca(order.orderSeller?.sellersRca)
 
         }
-        return this.orderRepository.save(order)
+
+       return  this.orderRepository.save(order)
+
     }
 
 
     override fun findByOrderCode(orderCode: Long): Order {
+
+
         val order: Order =
             (this.orderRepository.findByOrderCode(orderCode) ?: throw NotFoundOrderException("Pedido Não Localizado"))
         return order

@@ -18,13 +18,13 @@ data class State(
 
 
     @Enumerated(EnumType.STRING)
-    var state: StateInit = StateInit.DEFAULT,
+    var state: StateInit,
 
     @Enumerated(EnumType.STRING)
-    var firstLevel: FirstLevel = FirstLevel.SEM_PENDENCIA,
+    var firstLevel: FirstLevel,
 
     @Enumerated(EnumType.STRING)
-    var secondLevel: SecondLevel = SecondLevel.SEM_PENDENCIA,
+    var secondLevel: SecondLevel,
 
     @Column(nullable = true)
     var description: String = " ",

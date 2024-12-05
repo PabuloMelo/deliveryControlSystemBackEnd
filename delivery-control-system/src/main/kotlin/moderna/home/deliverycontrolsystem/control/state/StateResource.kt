@@ -44,6 +44,8 @@ class StateResource(
             val state: State = this.stateService.save(stateDTO.toEntity(orderRepository))
 
 
+            println("situação sakva $state")
+
             ResponseEntity.ok("Pedido ${state.order!!.orderCode} Salvo com sucesso!")
 
 

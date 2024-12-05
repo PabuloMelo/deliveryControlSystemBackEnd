@@ -21,37 +21,40 @@ data class StateDTO(
     val solveDate: LocalDate?,
 
 
-
-
     ) {
 
-     private fun solveDayDefault(state: StateInit, resolve: Resolve, invoiceDate: LocalDate): LocalDate? {
+    private fun solveDayDefault(state: StateInit, solveDate: LocalDate?, invoiceDate: LocalDate?): LocalDate? {
 
-        return when{
 
-            state == StateInit.SEM_PENDENCIAS ->
+        return when {
 
-               invoiceDate
+            state == StateInit.SEM_PENDENCIAS || state == StateInit.DEFAULT ->
 
-            state == StateInit.NAO_ENTREGUE || state == StateInit.COM_PENDENCIAS && resolve == Resolve.RESOLVIDO ->
+                invoiceDate
+
+            state == StateInit.NAO_ENTREGUE || state == StateInit.COM_PENDENCIAS && solveDate != null ->
 
                 this.solveDate
 
 
-            else -> {LocalDate.of(1,1,1)}
+            else -> {
+
+                LocalDate.of(2024, 1, 1)
+
+            }
         }
 
 
     }
 
-     private fun contDays(solveDate: LocalDate?, invoiceDate: LocalDate, state: StateInit, resolve: Resolve): Int {
+    private fun contDays(solveDate: LocalDate?, invoiceDate: LocalDate?, state: StateInit, resolve: Resolve): Int {
 
-        return when  {
-          state == StateInit.SEM_PENDENCIAS ->
+        return when {
+            state == StateInit.SEM_PENDENCIAS || state == StateInit.DEFAULT->
 
                 0
 
-       state == StateInit.NAO_ENTREGUE || state == StateInit.COM_PENDENCIAS && resolve == Resolve.PENDENTE ->
+            state == StateInit.NAO_ENTREGUE || state == StateInit.COM_PENDENCIAS && resolve == Resolve.PENDENTE ->
 
                 ChronoUnit.DAYS.between(invoiceDate, LocalDateTime.now()).toInt()
 
@@ -61,27 +64,33 @@ data class StateDTO(
     }
 
 
-
-    private fun defineResolve(state: StateInit, solveDate: LocalDate?): Resolve{
-
-        var resolve: Resolve = Resolve.PENDENTE
-
-       if (state == StateInit.COM_PENDENCIAS || state == StateInit.NAO_ENTREGUE && solveDate == null) {
-
-         resolve = Resolve.PENDENTE
+    private fun defineResolve(state: StateInit, solveDate: LocalDate?): Resolve {
 
 
-     }else if ( state == StateInit.COM_PENDENCIAS || state == StateInit.NAO_ENTREGUE && solveDate != null ) {
+        return when {
 
-      resolve =  Resolve.RESOLVIDO
 
-     }else if (state == StateInit.SEM_PENDENCIAS || state == StateInit.DEFAULT && solveDate == null){
+            state == StateInit.COM_PENDENCIAS && solveDate == null || state == StateInit.NAO_ENTREGUE && solveDate == null -> {
 
-          resolve =  Resolve.SEM_PROBLEMAS
+                Resolve.PENDENTE
+
+            }
+
+
+            state == StateInit.SEM_PENDENCIAS && solveDate == null || state == StateInit.DEFAULT && solveDate == null -> {
+
+                Resolve.SEM_PROBLEMAS
+
+            }
+
+            else -> {
+
+                Resolve.RESOLVIDO
+
+            }
 
         }
 
-        return resolve
 
     }
 
@@ -89,12 +98,10 @@ data class StateDTO(
     fun toEntity(orderRepository: OrderRepository): State {
 
 
-
         val order = orderRepository.findByOrderCode(orderNumber)
-        val orderInvoiceDate = order?.invoicingDate
-        val actualResolve = defineResolve(state,solveDate)
-        val actualContDays = contDays(solveDate,orderInvoiceDate!!, state, actualResolve)
-        val actualSolveDate = solveDayDefault(state,actualResolve, orderInvoiceDate)
+        val actualResolve = defineResolve(state, solveDate)
+        val actualContDays = contDays(solveDate, order?.invoicingDate, state, actualResolve)
+        val actualSolveDate = solveDayDefault(state, solveDate,order?.invoicingDate)
 
 
 
@@ -108,7 +115,7 @@ data class StateDTO(
             solveDriver = this.solveDriver,
             solveDate = actualSolveDate,
             daysUntilSolve = actualContDays,
-            resolve =  actualResolve
+            resolve = actualResolve
         )
     }
 

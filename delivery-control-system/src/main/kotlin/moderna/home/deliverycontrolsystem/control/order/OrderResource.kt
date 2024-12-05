@@ -43,24 +43,12 @@ class OrderResource(
     fun saveOrder(@RequestBody orderDTO: OrderDTO): ResponseEntity<String> {
 
 
-        //  orderDTO.defineLoad(orderDTO.orderType)
-
-        orderDTO.invoiceDateDefault(orderDTO.orderType, orderDTO.status, orderDTO.invoicingDate)
-
-        orderDTO.contDays(
-            orderDTO.orderType,
-            orderDTO.status,
-            orderDTO.purchaseDate,
-            LocalDate.now(),
-            orderDTO.invoicingDate
-        )
-
-
-
         return try {
 
             val order: Order =
                 this.orderService.saveOrder(orderDTO.toEntityOrder(customerRepository, sellersRepository, loadRepository))
+
+            orderService.updateAllOrders()
 
             ResponseEntity.ok("Pedido ${order.orderCode} salvo com sucesso")
 

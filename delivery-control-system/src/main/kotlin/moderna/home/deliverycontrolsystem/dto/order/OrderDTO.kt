@@ -26,9 +26,10 @@ data class OrderDTO(
     val orderAddress: String
 
 
-    ) {
+) {
 
 
+    private var contDays: Int = 0
 
     // Define o codigo RCA do vendedor do pedido com base nos  2 primeiros digitos do pedido
     private fun defineRCA(orderCode: Long?): Long {
@@ -45,20 +46,21 @@ data class OrderDTO(
         purchaseDate: LocalDate,
         actualDay: LocalDate,
         invoicingDate: LocalDate?
-    ): Int {
+    ) {
 
-        return when {
-            orderType == OrderType.ENTREGA_FUTURA && status == Status.PENDENTE || orderType == OrderType.ENTREGA_FUTURA && status == Status.AGENDADA ->
+        when {
+            orderType == OrderType.ENTREGA_FUTURA && (status == Status.AGENDADA
+                    || status == Status.AGUARDANDO_SOLICITACAO || status == Status.PENDENTE) ->
 
-                ChronoUnit.DAYS.between(purchaseDate, actualDay).toInt()
+                contDays = ChronoUnit.DAYS.between(purchaseDate, actualDay).toInt()
 
 
             orderType == OrderType.ENTREGA_FUTURA && status == Status.ENTREGUE && invoicingDate != null ->
 
-                ChronoUnit.DAYS.between(purchaseDate, invoicingDate).toInt()
+                contDays = ChronoUnit.DAYS.between(purchaseDate, invoicingDate).toInt()
 
 
-            else -> 0
+            else -> contDays = 0
 
 
         }
@@ -67,7 +69,7 @@ data class OrderDTO(
     // Define uma data padrão para o campo de faturamento em caso de pedidos do tipo entrega futura afim de evitar campos nullos
     fun invoiceDateDefault(orderType: OrderType, status: Status, invoicingDate: LocalDate?): LocalDate? {
 
-        return if (orderType == OrderType.ENTREGA_FUTURA && status == Status.PENDENTE) {
+        return if (orderType == OrderType.ENTREGA_FUTURA && status == Status.PENDENTE || orderType == OrderType.ENTREGA_FUTURA && status == Status.AGUARDANDO_SOLICITACAO) {
 
             LocalDate.of(1000, 1, 1)
 
@@ -79,12 +81,15 @@ data class OrderDTO(
     //Define o status do Pedido com base na contagem de dias entre a data da compra e o dia atual
     private fun defineOderFutureStatus(orderType: OrderType, status: Status, daysUntilDelivery: Int): FutureDlState {
 
+
         return when {
-            orderType == OrderType.ENTREGA_FUTURA && status == Status.PENDENTE && daysUntilDelivery <= 30 ->
+            (orderType == OrderType.ENTREGA_FUTURA && status == Status.PENDENTE && daysUntilDelivery <= 30) ||
+                    (orderType == OrderType.ENTREGA_FUTURA && status == Status.AGUARDANDO_SOLICITACAO && daysUntilDelivery <= 30) ->
 
                 FutureDlState.DentroDoPrazo
 
-            orderType == OrderType.ENTREGA_FUTURA && status == Status.PENDENTE && daysUntilDelivery > 30 ->
+            (orderType == OrderType.ENTREGA_FUTURA && status == Status.PENDENTE && daysUntilDelivery > 30) ||
+                    (orderType == OrderType.ENTREGA_FUTURA && status == Status.AGUARDANDO_SOLICITACAO && daysUntilDelivery > 30) ->
 
                 FutureDlState.AcimaDoPrazo
 
@@ -100,25 +105,27 @@ data class OrderDTO(
 
 
     //Transforma os Inputs fornecidos e preenche os campos da entidade
-    fun toEntityOrder(customerRepository: CustomerRepository, sellersRepository: SellersRepository, loadRepository: LoadRepository): Order {
+    fun toEntityOrder(
+        customerRepository: CustomerRepository,
+        sellersRepository: SellersRepository,
+        loadRepository: LoadRepository
+    ): Order {
+
 
         //transforma as funções em variaveis para serem aplicadas no na entidade
         val actualDayOfInvoicing = invoiceDateDefault(orderType, status, this.invoicingDate)
-        val actualContDays = contDays(orderType, status, purchaseDate, LocalDate.now(), actualDayOfInvoicing)
+        contDays(orderType, status, purchaseDate, LocalDate.now(), actualDayOfInvoicing)
         val actualStatus = defineOderFutureStatus(
             orderType,
             status,
-            contDays(orderType, status, purchaseDate, LocalDate.now(), invoicingDate)
+            contDays
         )
         //Busca no banco de dados o cliente com base no codigo fornecido no DTTO e preenche os campos pertinentes ao cliente
         val customer = customerRepository.findByCustomerCode(this.customerCode!!)
         val seller = sellersRepository.findBySellerRca(defineRCA(orderCode))
         val load = loadRepository.findByloadNumber(this.loadNumber!!)
 
-
-
-
-        return Order(
+        val order = Order(
 
             orderCode = this.orderCode,
             load = load,
@@ -129,10 +136,13 @@ data class OrderDTO(
             invoicingDate = actualDayOfInvoicing,
             orderSeller = seller,
             orderRCA = defineRCA(orderCode),
-            daysUntilDelivery = actualContDays,
+            daysUntilDelivery = contDays,
             orderFutureDelState = actualStatus,
             orderAddress = this.orderAddress
 
         )
+
+
+        return order
     }
 }

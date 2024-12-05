@@ -33,9 +33,9 @@ class LoadResource(
 
 
 
-    @GetMapping("/load/")
+    @GetMapping("/load")
 
-    fun findAllLoadNumber(@RequestParam(value = "loadNumber") loadNumber: Long): ResponseEntity <List<OrderView>> {
+    fun findAllLoadNumber(@RequestParam(value = "loadNumber", required = true) loadNumber: Long): ResponseEntity <List<OrderView>> {
 
         val loadOrders  = loadService.findAllbyLoad(loadNumber)
 
