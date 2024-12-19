@@ -1,0 +1,39 @@
+[33m5d3cd9d[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m HEAD@{0}: checkout: moving from V4_Alteracoes_nas_variaveis to main
+[33mb78fac2[m[33m ([m[1;32mV4_Alteracoes_nas_variaveis[m[33m)[m HEAD@{1}: commit: correção de bugs de validaçãos
+[33m086b4d8[m[33m ([m[1;31morigin/V4_Alteracoes_nas_variaveis[m[33m)[m HEAD@{2}: commit: Exclusão da tabela future delivery, alteração da tabela state e adição de um endpoint de checagem de conexão
+[33mb7d44eb[m HEAD@{3}: commit: alterações nas nomenclaturas das variaveis e adição da nova variavel address a entidade order
+[33m6e0a8ba[m HEAD@{4}: pull origin main --rebase (finish): returning to refs/heads/V4_Alteracoes_nas_variaveis
+[33m6e0a8ba[m HEAD@{5}: pull origin main --rebase (pick): Atualização do arquivo de conexão Web config alterando metodo de conexão e alterando a URL do endpoint save customer
+[33m570aea6[m HEAD@{6}: pull origin main --rebase (pick): inumeras alterações e finalização do projeto
+[33m0743535[m HEAD@{7}: pull origin main --rebase (pick): inumeras alterações e finalização do projeto
+[33m4c8b7ab[m HEAD@{8}: pull origin main --rebase (pick): Muitas alterações
+[33mdafd7ec[m HEAD@{9}: pull origin main --rebase (pick): Implementação das classes de dto, serviço e interface
+[33m26dd633[m HEAD@{10}: pull origin main --rebase (pick): muitas alteracoes e mudancas de tipos de variaveis na classe order e customer e nas demais
+[33m199d80c[m HEAD@{11}: pull origin main --rebase (pick): Implementando a camada de serviço
+[33m115c838[m HEAD@{12}: pull origin main --rebase (pick): Adicionando a camada de repositorio e novas migrations
+[33mec19b3e[m HEAD@{13}: pull origin main --rebase (pick): Adicionando as Migrations ao resource
+[33ma2c0b12[m HEAD@{14}: pull origin main --rebase (pick): Third Commit
+[33md0f9b19[m HEAD@{15}: pull origin main --rebase (pick): Seconde Commit
+[33m15dd51e[m HEAD@{16}: pull origin main --rebase (pick): first commit
+[33m763238e[m HEAD@{17}: pull origin main --rebase (start): checkout 763238e928b037129a3d09b6ee2e3fb9e30ca934
+[33m8b02681[m HEAD@{18}: commit: Atualização do arquivo de conexão Web config alterando metodo de conexão e alterando a URL do endpoint save customer
+[33mf6a0c2a[m HEAD@{19}: commit: inumeras alterações e finalização do projeto
+[33m6d61889[m HEAD@{20}: pull origin main --rebase (finish): returning to refs/heads/V4_Alteracoes_nas_variaveis
+[33m6d61889[m HEAD@{21}: pull origin main --rebase (pick): inumeras alterações e finalização do projeto
+[33m9135746[m HEAD@{22}: pull origin main --rebase (pick): Muitas alterações
+[33m29743a9[m HEAD@{23}: pull origin main --rebase (pick): Implementação das classes de dto, serviço e interface
+[33mee32fd9[m HEAD@{24}: pull origin main --rebase (start): checkout ee32fd9b755d4bbbf707d9e7278349fcf4e6e009
+[33mf4fe0cb[m HEAD@{25}: commit: inumeras alterações e finalização do projeto
+[33m572ffd2[m HEAD@{26}: commit: Muitas alterações
+[33mda5e4b5[m HEAD@{27}: commit: Implementação das classes de dto, serviço e interface
+[33m1d9d99c[m HEAD@{28}: commit: muitas alteracoes e mudancas de tipos de variaveis na classe order e customer e nas demais
+[33m2e04a46[m[33m ([m[1;31morigin/V3_Camada_de_Serviço[m[33m, [m[1;32mV3_Camada_de_Serviço[m[33m)[m HEAD@{29}: checkout: moving from V3_Camada_de_Serviço to V4_Alteracoes_nas_variaveis
+[33m2e04a46[m[33m ([m[1;31morigin/V3_Camada_de_Serviço[m[33m, [m[1;32mV3_Camada_de_Serviço[m[33m)[m HEAD@{30}: commit: Implementando a camada de serviço
+[33maff5f45[m[33m ([m[1;31morigin/V2-Repositorios-TabelaVendas[m[33m, [m[1;32mV2-Repositorios-TabelaVendas[m[33m)[m HEAD@{31}: checkout: moving from V2-Repositorios-TabelaVendas to V3_Camada_de_Serviço
+[33maff5f45[m[33m ([m[1;31morigin/V2-Repositorios-TabelaVendas[m[33m, [m[1;32mV2-Repositorios-TabelaVendas[m[33m)[m HEAD@{32}: commit: Adicionando a camada de repositorio e novas migrations
+[33m5d3cd9d[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m HEAD@{33}: checkout: moving from main to V2-Repositorios-TabelaVendas
+[33m5d3cd9d[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m HEAD@{34}: commit: Adicionando as Migrations ao resource
+[33m17725a5[m HEAD@{35}: commit: Third Commit
+[33m69eeff6[m HEAD@{36}: commit: Seconde Commit
+[33m73fd648[m HEAD@{37}: Branch: renamed refs/heads/master to refs/heads/main
+[33m73fd648[m HEAD@{39}: commit (initial): first commit
